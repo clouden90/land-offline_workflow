@@ -11,10 +11,7 @@ RUN pwd
 
 RUN echo $(ls $HOME)
 
-RUN mkdir build; cd build; 
-
-RUN wget -q https://epic-sandbox-srw.s3.amazonaws.com/land-da-data.tar.gz
-RUN tar xvfz land-da-data.tar.gz
+RUN mkdir build; cd build; wget -q https://epic-sandbox-srw.s3.amazonaws.com/land-da-data.tar.gz; tar xvfz land-da-data.tar.gz
 
 ENV LANDDA_TESTDATA=$HOME/build/land-release
 ENV IODA_BUILD_DIR=/opt/ioda-bundle/build

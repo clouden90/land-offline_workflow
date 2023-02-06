@@ -20,4 +20,4 @@ ENV LANDDA_TESTDATA=$HOME/build/land-release
 ENV IODA_BUILD_DIR=/opt/ioda-bundle/build
 ENV JEDI_EXECDIR=/opt/fv3-bundle/build/bin
 
-RUN source /opt/spack-stack/.bashenv; ecbuild ..; make -j2; ctest -V --stop-on-failure
+RUN source /opt/spack-stack/.bashenv; cd build; ecbuild ../; make -j2; ctest -V --stop-on-failure

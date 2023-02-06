@@ -2,20 +2,22 @@ From noaaepic/ubuntu20.04-intel-landda:develop
 
 CMD ["/bin/bash"]
 
-WORKDIR /opt
-RUN wget https://epic-sandbox-srw.s3.amazonaws.com/land-da-data.tar.gz
+ENV HOME=/home
+COPY . $HOME/
+
+WORKDIR $HOME
+
+RUN pwd
+
+RUN echo $(ls $HOME)
+
+RUN mkdir build; cd build; 
+
+RUN wget -q https://epic-sandbox-srw.s3.amazonaws.com/land-da-data.tar.gz
 RUN tar xvfz land-da-data.tar.gz
 
-WORKDIR /opt/land-release
-
-COPY . ./land-offline_workflow
-
-ENV LANDDA_TESTDATA=/opt/land-release
-ENV MPIRUN=mpirun
+ENV LANDDA_TESTDATA=$HOME/build/land-release
 ENV IODA_BUILD_DIR=/opt/ioda-bundle/build
 ENV JEDI_EXECDIR=/opt/fv3-bundle/build/bin
 
-RUN mkdir -p /opt/land-release/land-offline_workflow/build
-
-WORKDIR /opt/land-release/land-offline_workflow/build
-CMD ["/bin/bash", "-c", "source /opt/spack-stack/.bashenv;ecbuild ..;make -j2;ctest -V --stop-on-failure"]
+RUN source /opt/spack-stack/.bashenv; ecbuild ..; make -j2; ctest -V --stop-on-failure
